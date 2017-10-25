@@ -11,7 +11,7 @@
       "metadata": {
         "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
       },
-      "defaultValue": "https://raw.githubusercontent.com/wmhussain/two-tier-app-migration-containers/master/"
+      "defaultValue": "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/"
     },
     "_artifactsLocationSasToken": {
       "type": "securestring",
@@ -22,9 +22,8 @@
     }
   },
   "variables": {
-    "scriptFolder": "scripts/",
     "scriptFileName": "envcreate.ps1",
-    "dbcreateScript": "[concat(parameters('_artifactsLocation'), variables('scriptFolder'), variables('scriptFileName'), parameters('_artifactsLocationSasToken'))]"
+    "dbcreateScript": "[concat(parameters('_artifactsLocation'), variables('scriptFileName'), parameters('_artifactsLocationSasToken'))]"
   },
   "resources": [
     {
