@@ -53,7 +53,7 @@
         "sqlAutopatchingDayOfWeek": "Sunday",
         "sqlAutopatchingStartHour": 2,
         "sqlAutopatchingWindowDuration": 60,
-        "rServicesEnabled": "false",
+        "rServicesEnabled": "false"
     },
     "resources": [{
             "name": "[parameters('virtualMachineName')]",
