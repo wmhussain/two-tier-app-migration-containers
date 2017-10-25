@@ -1,5 +1,5 @@
 # to Install web deploy
-$Url = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/WebDeploy_amd64_en-US.msi"
+$Url = "https://raw.githubusercontent.com/wmhussain/two-tier-app-migration-containers/master/scripts/WebDeploy_amd64_en-US.msi"
 Invoke-WebRequest -Uri "$Url" -OutFile "C:\Packages\WebDeploy_amd64_en-US.msi"
 msiexec.exe /i C:\Packages\WebDeploy_amd64_en-US.msi  /qn
 
@@ -51,10 +51,12 @@ set-webbinding -Name 'Default Web Site' -BindingInformation "*:80:" -propertyNam
 New-Website -Name crud -Force -PhysicalPath C:\inetpub\crud -Port 80
 
 #To deploy Crud app using local database
-$Url1 = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/crud5/DotNetAppSqlDb.deploy.cmd"
-$Url2 = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/crud5/DotNetAppSqlDb.SetParameters.xml"
-$Url3 = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/crud5/DotNetAppSqlDb.zip" 
-
+#$Url1 = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/crud5/DotNetAppSqlDb.deploy.cmd"
+#$Url2 = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/crud5/DotNetAppSqlDb.SetParameters.xml"
+#$Url3 = "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/crud5/DotNetAppSqlDb.zip" 
+$Url1 = "https://raw.githubusercontent.com/wmhussain/two-tier-app-migration-containers/master/scripts/DotNetAppSqlDb.deploy.cmd"
+$Url2 = "https://raw.githubusercontent.com/wmhussain/two-tier-app-migration-containers/master/scripts/DotNetAppSqlDb.SetParameters.xml"
+$Url3 = "https://raw.githubusercontent.com/wmhussain/two-tier-app-migration-containers/master/scripts/DotNetAppSqlDb.zip"
 
 Invoke-WebRequest -Uri "$Url1" -OutFile "C:\Packages\DotNetAppSqlDb.deploy.cmd"
 Invoke-WebRequest -Uri "$Url2" -OutFile "C:\Packages\DotNetAppSqlDb.SetParameters.xml"
