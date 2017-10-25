@@ -40,7 +40,7 @@
       "metadata": {
         "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
       },
-      "defaultValue": "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/"
+      "defaultValue": "https://raw.githubusercontent.com/wmhussain/two-tier-app-migration-containers/master/"
     },
     "_artifactsLocationSasToken": {
       "type": "securestring",
@@ -74,7 +74,8 @@
     "vmExtensionName": "dscExtension",
     "dscExtensionFileName": "ContosoWebsite.ps1.zip",
     "nestedCustomTemplateFileName": "nestedCustom.json",
-    "modulesUrl": "[concat(parameters('_artifactsLocation'), variables('dscExtensionFileName'), parameters('_artifactsLocationSasToken'))]"
+    "nestedFolder": "nested/"
+    "modulesUrl": "[concat(parameters('_artifactsLocation'), variables('nestedFolder'), variables('dscExtensionFileName'), parameters('_artifactsLocationSasToken'))]"
   },
   "resources": [
     {
@@ -218,7 +219,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), variables('nestedCustomTemplateFileName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), variables('nestedFolder'), variables('nestedCustomTemplateFileName'), parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
