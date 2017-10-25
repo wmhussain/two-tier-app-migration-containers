@@ -5,18 +5,72 @@
         "virtualMachineName": {
             "type": "string"
         },
+        "virtualMachineSize": {
+            "type": "string",
+            "defaultValue": "Standard_D2_v2_Promo"
+        },
         "adminUsername": {
             "type": "string"
         },
         "adminPassword": {
             "type": "securestring"
         },
+        "sqlConnectivityType": {
+            "type": "string",
+            "defaultValue": "Private"
+        },
+        "sqlPortNumber": {
+            "type": "int",
+            "defaultValue": 1433
+        },
+        "sqlStorageDisksCount": {
+            "type": "int",
+            "defaultValue": 1
+        },
+        "sqlStorageWorkloadType": {
+            "type": "string",
+            "defaultValue": "GENERAL"
+        },
+        "sqlStorageDisksConfigurationType": {
+            "type": "string",
+            "defaultValue": "NEW"
+        },
+        "sqlStorageStartingDeviceId": {
+            "type": "int",
+            "defaultValue": 2
+        },
+        "sqlStorageDeploymentToken": {
+            "type": "int",
+            "defaultValue": 56996
+        },
+        "sqlAutopatchingDayOfWeek": {
+            "type": "string",
+            "defaultValue": "Sunday"
+        },
+        "sqlAutopatchingStartHour": {
+            "type": "int",
+            "defaultValue": 2
+        },
+        "sqlAutopatchingWindowDuration": {
+            "type": "int",
+            "defaultValue": 60
+        },
+        "sqlAuthenticationLogin": {
+            "type": "string"
+        },
+        "sqlAuthenticationPassword": {
+            "type": "securestring"
+        },
+        "rServicesEnabled": {
+            "type": "string",
+            "defaultValue": "false"
+        },
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
             },
-            "defaultValue": "https://github.com/wmhussain/two-tier-app-migration-containers/blob/master/"
+            "defaultValue": "https://stgelb6j46erlp4m.blob.core.windows.net/iisartifacts/"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
@@ -33,29 +87,14 @@
         "vnetAddressPrefix": "10.0.0.0/16",
         "subnet1Name": "dscSubnet-1",
         "subnet1Prefix": "10.0.0.0/24",
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
         "publicIPAddressType": "Dynamic",
         "publicIPAddressName": "dscPubIP",
         "networkSecurityGroupName": "sqlNsg",
-        "sqlStorageDeploymentToken": 56996,
-        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
         "nicName": "dscNIC",
         "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnet1Name'))]",
-        "nestedDscTemplateFileName": "nestedDsc.json",
-        "nestedFolder": "nested/",
-        "sqlAuthenticationLogin":"dbuser",
-        "sqlAuthenticationPassword": "dbPassw0rd",
-        "virtualMachineSize": "Standard_D2_v2",
-        "sqlConnectivityType": "Private",
-        "sqlPortNumber":  1433,
-        "sqlStorageDisksCount":1,
-        "sqlStorageWorkloadType": "GENERAL",
-        "sqlStorageDisksConfigurationType": "NEW",
-        "sqlStorageStartingDeviceId": 2,
-        "sqlAutopatchingDayOfWeek": "Sunday",
-        "sqlAutopatchingStartHour": 2,
-        "sqlAutopatchingWindowDuration": 60,
-        "rServicesEnabled": "false"
+        "nestedDscTemplateFileName": "nestedDsc.json"
     },
     "resources": [{
             "name": "[parameters('virtualMachineName')]",
@@ -76,7 +115,7 @@
                     }
                 },
                 "hardwareProfile": {
-                    "vmSize": "[variables('virtualMachineSize')]"
+                    "vmSize": "[parameters('virtualMachineSize')]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -135,9 +174,9 @@
                     "AutoPatchingSettings": {
                         "PatchCategory": "WindowsMandatoryUpdates",
                         "Enable": true,
-                        "DayOfWeek": "[variables('sqlAutopatchingDayOfWeek')]",
-                        "MaintenanceWindowStartingHour": "[variables('sqlAutopatchingStartHour')]",
-                        "MaintenanceWindowDuration": "[variables('sqlAutopatchingWindowDuration')]"
+                        "DayOfWeek": "[parameters('sqlAutopatchingDayOfWeek')]",
+                        "MaintenanceWindowStartingHour": "[parameters('sqlAutopatchingStartHour')]",
+                        "MaintenanceWindowDuration": "[parameters('sqlAutopatchingWindowDuration')]"
                     },
                     "KeyVaultCredentialSettings": {
                         "Enable": false,
@@ -145,26 +184,26 @@
                     },
                     "ServerConfigurationsManagementSettings": {
                         "SQLConnectivityUpdateSettings": {
-                            "ConnectivityType": "[variables('sqlConnectivityType')]",
-                            "Port": "[variables('sqlPortNumber')]"
+                            "ConnectivityType": "[parameters('sqlConnectivityType')]",
+                            "Port": "[parameters('sqlPortNumber')]"
                         },
                         "SQLWorkloadTypeUpdateSettings": {
-                            "SQLWorkloadType": "[variables('sqlStorageWorkloadType')]"
+                            "SQLWorkloadType": "[parameters('sqlStorageWorkloadType')]"
                         },
                         "SQLStorageUpdateSettings": {
-                            "DiskCount": "[variables('sqlStorageDisksCount')]",
-                            "NumberOfColumns": "[variables('sqlStorageDisksCount')]",
-                            "StartingDeviceID": "[variables('sqlStorageStartingDeviceId')]",
-                            "DiskConfigurationType": "[variables('sqlStorageDisksConfigurationType')]"
+                            "DiskCount": "[parameters('sqlStorageDisksCount')]",
+                            "NumberOfColumns": "[parameters('sqlStorageDisksCount')]",
+                            "StartingDeviceID": "[parameters('sqlStorageStartingDeviceId')]",
+                            "DiskConfigurationType": "[parameters('sqlStorageDisksConfigurationType')]"
                         },
                         "AdditionalFeaturesServerConfigurations": {
-                            "IsRServicesEnabled": "[variables('rServicesEnabled')]"
+                            "IsRServicesEnabled": "[parameters('rServicesEnabled')]"
                         }
                     }
                 },
                 "protectedSettings": {
-                    "SQLAuthUpdateUserName": "[variables('sqlAuthenticationLogin')]",
-                    "SQLAuthUpdatePassword": "[variables('sqlAuthenticationPassword')]"
+                    "SQLAuthUpdateUserName": "[parameters('sqlAuthenticationLogin')]",
+                    "SQLAuthUpdatePassword": "[parameters('sqlAuthenticationPassword')]"
                 }
             }
         },
@@ -264,7 +303,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('_artifactsLocation'), variables('nestedFolder'), variables('nestedDscTemplateFileName'), parameters('_artifactsLocationSasToken'))]",
+                    "uri": "[concat(parameters('_artifactsLocation'), variables('nestedDscTemplateFileName'), parameters('_artifactsLocationSasToken'))]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
