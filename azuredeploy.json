@@ -36,6 +36,8 @@
         "publicIPAddressType": "Dynamic",
         "publicIPAddressName": "dscPubIP",
         "networkSecurityGroupName": "sqlNsg",
+        "sqlStorageDeploymentToken": 56996,
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
         "nicName": "dscNIC",
         "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnet1Name'))]",
