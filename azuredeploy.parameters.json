@@ -11,12 +11,6 @@
         },
         "adminPassword": {
             "value": "GEN-PASSWORD"
-        },
-        "sqlAuthenticationLogin": {
-            "value": "dbuser"
-        },
-        "sqlAuthenticationPassword": {
-            "value": "dbPassw0rd"
         }
     }
 }
